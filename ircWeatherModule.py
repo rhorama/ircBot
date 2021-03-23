@@ -1,11 +1,14 @@
 import requests
 import json
+import os
+from dotenv import load_dotenv
 from utils import convertDate
 
 
 def main(switchInput, f):
-    apikey = "&appid=8e4c8e9d8b849b0a0d50b8797e5c6bea"
-    currentWeatherUrl = f"http://api.openweathermap.org/data/2.5/weather?q={switchInput.strip(' ')}&units=imperial{apikey}"
+    load_dotenv()
+    apikey = os.getenv('APIKEY_OPENWEATHERMAP')
+    currentWeatherUrl = f"http://api.openweathermap.org/data/2.5/weather?q={switchInput.strip(' ')}&units=imperial&appid={apikey}"
     response = requests.get(currentWeatherUrl)
 
     json_data = response.json()

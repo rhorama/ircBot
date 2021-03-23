@@ -10,6 +10,8 @@ channel = "#fart"
 botnick = "rhobot"
 adminname = "rhorama"
 
+
+
 ircsock.connect((server, 6660))
 ircsock.send(bytes("USER " + botnick + " " + botnick +
              " " + botnick + " " + botnick + '\n', "UTF-8"))

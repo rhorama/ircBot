@@ -35,3 +35,6 @@ def main(ircsock):
                     print("exit code received")
                     ircsock.send("QUIT \n".encode())
                     return
+               # if message.rstrip() == "resetBot":
+               #     reloadAll()
+

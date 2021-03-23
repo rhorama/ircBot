@@ -5,8 +5,7 @@ from utils import convertDate
 
 def main(switchInput, f):
     apikey = "&appid=8e4c8e9d8b849b0a0d50b8797e5c6bea"
-    currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + \
-        switchInput.strip(' ') + "&units=imperial" + apikey
+    currentWeatherUrl = f"http://api.openweathermap.org/data/2.5/weather?q={switchInput.strip(' ')}&units=imperial{apikey}"
     response = requests.get(currentWeatherUrl)
 
     json_data = response.json()
@@ -15,7 +14,7 @@ def main(switchInput, f):
         weather = json_data["weather"]
     except TypeError:
         return "no weather data retrieved"
-        
+
     mainWeather = json_data["main"]
     mainCondition = weather[0]["main"]
     conditionDesc = weather[0]["description"]

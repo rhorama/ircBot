@@ -18,7 +18,7 @@ def convertDate(unixDate):
 
 
 def joinchan(chan, ircsock):
-    ircsock.send(bytes("JOIN " + chan + '\n', "UTF-8"))
+    ircsock.send(f"JOIN {chan}\n".encode())
     ircmsg = ""
     while ircmsg.find("End of /NAMES list.") == -1:
         ircmsg = ircsock.recv(2048).decode("UTF-8")

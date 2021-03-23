@@ -10,6 +10,7 @@ def main(switchInput, f):
     apikey = os.getenv('APIKEY_OPENWEATHERMAP')
     currentWeatherUrl = f"http://api.openweathermap.org/data/2.5/weather?q={switchInput.strip(' ')}&units=imperial&appid={apikey}"
     response = requests.get(currentWeatherUrl)
+    weatherDict = {}
 
     json_data = response.json()
 
@@ -18,35 +19,40 @@ def main(switchInput, f):
     except TypeError:
         return "no weather data retrieved"
 
+    
     mainWeather = json_data["main"]
-    mainCondition = weather[0]["main"]
-    conditionDesc = weather[0]["description"]
-    temp = mainWeather["temp"]
-    feelsLike = mainWeather["feels_like"]
-    pressure = mainWeather["pressure"]
-    humidity = mainWeather["humidity"]
-    city = json_data["name"]
-    country = json_data["sys"]["country"]
-    wind = json_data["wind"]["speed"]
-    lat = json_data["coord"]["lat"]
-    lon = json_data["coord"]["lon"]
-    coord = str(lat) + " | " + str(lon)
-    out = [mainCondition, conditionDesc, temp, feelsLike,
-           pressure, humidity, city, country, wind, coord]
+    weatherDict['mainCondition'] = weather[0]["main"]
+    weatherDict['conditionDesc'] = weather[0]["description"]
+    weatherDict['temp'] = mainWeather["temp"]
+    weatherDict['feelsLike'] = mainWeather["feels_like"]
+    weatherDict['pressure'] = mainWeather["pressure"]
+    weatherDict['humidity'] = mainWeather["humidity"]
+    weatherDict['city'] = json_data["name"]
+    weatherDict['country'] = json_data["sys"]["country"]
+    weatherDict['wind'] = json_data["wind"]["speed"]
+    weatherDict['lat'] = json_data["coord"]["lat"]
+    weatherDict['lon'] = json_data["coord"]["lon"]
+    weatherDict['coord'] = f"{weatherDict['lat']} +  |  {weatherDict['lon']}"
+    out = []
+    for item in weatherDict:
+        out.append(item)
 
     oneCallWeatherUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + \
-        str(lat) + "&lon=" + str(lon) + \
+        str(weatherDict['lat']) + "&lon=" + str(weatherDict['lon']) + \
         "&exclude=minutely,hourly" + "&units=imperial" + apikey
     oneCallResponse = requests.get(oneCallWeatherUrl)
     oneCallJson = oneCallResponse.json()
 
     dailyString = "forecast: "
-    daily = oneCallJson["daily"]
-    for jsonDay in daily:
-        udate = jsonDay["dt"]
-        pdate = convertDate(udate)
-        dailyString = dailyString + "|" + str(pdate)
 
+    try:
+        daily = oneCallJson["daily"]
+        for jsonDay in daily:
+            udate = jsonDay["dt"]
+            pdate = convertDate(udate)
+            dailyString = dailyString + "|" + str(pdate)
+    except KeyError:
+        return "key error"
     print(out)
     print(dailyString)
     if f == True:

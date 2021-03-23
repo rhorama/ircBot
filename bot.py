@@ -17,6 +17,9 @@ ircsock.send(bytes("NICK " + botnick + '\n', "UTF-8"))
 time.sleep(2)
 utils.joinchan(channel, ircsock)
 
+
 def main():
     core.main(ircsock)
+
+
 main()

@@ -1,5 +1,7 @@
 import ircWeatherModule
 import utils
+
+
 def main(input):
     commandList = ["!w", "!wf", "!cf"]
     if len(input) == 0:

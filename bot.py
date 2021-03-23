@@ -13,9 +13,8 @@ adminname = "rhorama"
 
 
 ircsock.connect((server, 6660))
-ircsock.send(bytes("USER " + botnick + " " + botnick +
-             " " + botnick + " " + botnick + '\n', "UTF-8"))
-ircsock.send(bytes("NICK " + botnick + '\n', "UTF-8"))
+ircsock.send(f"USER {botnick} {botnick} {botnick} {botnick}\n".encode())
+ircsock.send(f"NICK {botnick}\n".encode())
 time.sleep(2)
 utils.joinchan(channel, ircsock)
 

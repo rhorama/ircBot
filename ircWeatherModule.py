@@ -11,9 +11,12 @@ def main(switchInput, f):
 
     json_data = response.json()
 
-    weather = json_data["weather"]
+    try:
+        weather = json_data["weather"]
+    except TypeError:
+        return "no weather data retrieved"
+        
     mainWeather = json_data["main"]
-
     mainCondition = weather[0]["main"]
     conditionDesc = weather[0]["description"]
     temp = mainWeather["temp"]

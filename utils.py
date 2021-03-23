@@ -2,7 +2,7 @@ import random
 import datetime
 import socket
 
-channel = "##fart-bot-test"
+channel = "#fart"
 
 
 def flip():

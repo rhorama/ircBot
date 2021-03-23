@@ -6,7 +6,7 @@ import core
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "irc.irchighway.net"
-channel = "##fart-bot-test"
+channel = "#fart"
 botnick = "rhobot"
 adminname = "rhorama"
 

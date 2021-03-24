@@ -22,17 +22,17 @@ def main(switch_input, f):
 
     
     main_weather = json_data["main"]
-    weather_table['mainCondition'] = weather[0]["main"]
-    weather_table['conditionDesc'] = weather[0]["description"]
+    weather_table['main condition'] = weather[0]["main"]
+    weather_table['condition description'] = weather[0]["description"]
     weather_table['temp'] = main_weather["temp"]
-    weather_table['feelsLike'] = main_weather["feels_like"]
+    weather_table['feels like'] = main_weather["feels_like"]
     weather_table['pressure'] = main_weather["pressure"]
     weather_table['humidity'] = main_weather["humidity"]
     weather_table['city'] = json_data["name"]
     weather_table['country'] = json_data["sys"]["country"]
     weather_table['wind'] = json_data["wind"]["speed"]
-    weather_table['lat'] = json_data["coord"]["lat"]
-    weather_table['lon'] = json_data["coord"]["lon"]
+    weather_table['latitude'] = json_data["coord"]["lat"]
+    weather_table['longitude'] = json_data["coord"]["lon"]
     weather_table['coord'] = f"{weather_table['lat']}|{weather_table['lon']}"
     out = []
     for item in weather_table:

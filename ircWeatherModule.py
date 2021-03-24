@@ -17,7 +17,8 @@ def main(switch_input, f):
     try:
         weather = json_data["weather"]
     except TypeError:
-        return "no weather data retrieved"
+        print(f"typeError Exception: cannot find weather data in {weather}")
+        return "TypeError Exception: Cannot find weather data"
 
     
     main_weather = json_data["main"]
@@ -35,9 +36,9 @@ def main(switch_input, f):
     weather_table['coord'] = f"{weather_table['lat']}|{weather_table['lon']}"
     out = []
     for item in weather_table:
-        out.append(item)
+        out.append(f"{item}: {weather_table[item]}")
 
-    one_call_weather_url = f"https://api.openweathermap.org/data/2.5/onecall?lat={weather_table['lat']}&lon={weather_table['lon']}&exclude=minutely,hourly&units=imperial{apikey}"
+    one_call_weather_url = f"https://api.openweathermap.org/data/2.5/onecall?lat={weather_table['lat']}&lon={weather_table['lon']}&exclude=minutely,hourly&units=imperial&appid={apikey}"
     one_call_response = requests.get(one_call_weather_url)
     one_call_json = one_call_response.json()
 

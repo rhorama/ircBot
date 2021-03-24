@@ -1,5 +1,5 @@
 import weather_module
-import utils
+from utils import flip
 
 
 def main(input):
@@ -9,7 +9,7 @@ def main(input):
     input_command = input_items[0]
     input_args = input_items[1:]
     try:
-        command_data = {'!w': weather_module.main, '!cf': utils.flip}
+        command_data = {'!w': weather_module.main, '!cf': flip}
         out = command_data[input_command]
         return out(input_args)
     except IndexError:

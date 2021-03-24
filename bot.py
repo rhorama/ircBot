@@ -12,6 +12,7 @@ adminname = "rhorama"
 port = 6660
 logfile = "test.txt"
 
+
 class Bot:
 
     def __init__(self, server, port, channel, botnick, adminname, logger):
@@ -36,9 +37,9 @@ class Bot:
         ircsock.send("PONG :pingis\n".encode())
         print(pong)
 
-    def sendmsg(self, ircsock, msg, target=channel):  # sends messages to the target.
+    # sends messages to the target.
+    def sendmsg(self, ircsock, msg, target=channel):
         ircsock.send(f"PRIVMSG {target} :{msg}\n".encode())
-
 
     def create_socket(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -47,12 +48,12 @@ class Bot:
 
     def run(self):
         ircsock = self.create_socket()
-        ircsock.send(f"USER {botnick} {botnick} {botnick} {botnick}\n".encode())
+        ircsock.send(
+            f"USER {botnick} {botnick} {botnick} {botnick}\n".encode())
         ircsock.send(f"NICK {botnick}\n".encode())
         time.sleep(2)
         self.joinchan(channel, ircsock)
         self.listener(ircsock)
-
 
     def listener(self, ircsock):
         while 1:
@@ -84,8 +85,7 @@ class Bot:
                         print("exit code received")
                         ircsock.send("QUIT \n".encode())
                         return
-                # if message.rstrip() == "resetBot":
-                #     reloadAll()
 
+#eventually need to move startup to own files
 bot1 = Bot(server, port, channel, botnick, adminname, logfile)
 bot1.run()

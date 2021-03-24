@@ -33,4 +33,4 @@ def ping(ircsock):  # respond to server Pings.
 
 
 def sendmsg(ircsock, msg, target=channel):  # sends messages to the target.
-    ircsock.send(bytes("PRIVMSG " + target + " :" + msg + '\n', "UTF-8"))
+    ircsock.send(f"PRIVMSG {target} :{msg}\n".encode())

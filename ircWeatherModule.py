@@ -50,7 +50,7 @@ def main(switchInput, f):
         for jsonDay in daily:
             udate = jsonDay["dt"]
             pdate = convertDate(udate)
-            dailyString = dailyString + "|" + str(pdate)
+            dailyString = f"{dailyString}|{pdate}"
     except KeyError:
         return "key error"
     print(out)

@@ -7,7 +7,7 @@ def main(ircsock):
     while 1:
         botnick = "rhobot"
         adminname = "rhorama"
-        exitcode = "bye " + botnick
+        exitcode = f"bye  + {botnick}"
         ircmsg = ircsock.recv(2048).decode("UTF-8")
         ircmsg = ircmsg.strip('\n\r')
         if ircmsg.find("PING :") != -1:

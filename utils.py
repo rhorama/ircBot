@@ -12,7 +12,7 @@ def flip():
         return "Tails"
 
 
-def convertDate(unixDate):
+def convert_date(unixDate):
     out = datetime.datetime.fromtimestamp(int(unixDate)).strftime('%m-%d')
     return out
 

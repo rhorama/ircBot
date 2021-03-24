@@ -8,7 +8,7 @@ def main(input):
     inputList = input.split(" ")
     inputCommand = inputList[0]
     current_weather = ircWeatherModule.main(input.split(" ")[1], True)
-    weather_forecast = ircWeatherModule.main(input.split(" ")[1], True)
+    weather_forecast = ircWeatherModule.main(input.split(" ")[1], False)
     coin_flip = utils.flip()
     try:
         commandDict = {'!w': current_weather, '!wf': weather_forecast, '!cf': coin_flip}

@@ -6,5 +6,10 @@ class Logger:
         file = open(self.logfile, "a")
         file.write(f"INFO: {message}")
         file.close()
+    
+    def error(self, message):
+        file = open(self.logfile, "a")
+        file.write(f"ERROR: {message}")
+        file.close()
 
     

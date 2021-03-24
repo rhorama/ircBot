@@ -1,6 +1,7 @@
 import random
 import datetime
 import socket
+from logger import Logger
 
 channel = "#fart"
 
@@ -16,6 +17,6 @@ def convert_date(unixDate):
     out = datetime.datetime.fromtimestamp(int(unixDate)).strftime('%m-%d')
     return out
 
-
-
-
+def get_logger():
+    logg = Logger("testlog.txt")
+    return logg

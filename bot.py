@@ -2,7 +2,7 @@ import socket
 import time
 import switchboard
 import utils
-import core
+import logger
 
 # these vars will live in a config file eventually
 server = "irc.irchighway.net"
@@ -10,15 +10,17 @@ channel = "#fart"
 botnick = "rhobot"
 adminname = "rhorama"
 port = 6660
+logfile = "test.txt"
 
 class Bot:
 
-    def __init__(self, server, port, channel, botnick, adminname):
+    def __init__(self, server, port, channel, botnick, adminname, logger):
         self.server = server
         self.port = port
         self.channel = channel
         self.botnick = botnick
         self.adminname = adminname
+        self.logger = utils.get_logger()
         self.ircsock = self.create_socket()
 
     def joinchan(self, chan, ircsock):
@@ -50,6 +52,7 @@ class Bot:
         time.sleep(2)
         self.joinchan(channel, ircsock)
         self.listener(ircsock)
+
 
     def listener(self, ircsock):
         while 1:
@@ -84,5 +87,5 @@ class Bot:
                 # if message.rstrip() == "resetBot":
                 #     reloadAll()
 
-bot1 = Bot(server, port, channel, botnick, adminname)
+bot1 = Bot(server, port, channel, botnick, adminname, logfile)
 bot1.run()

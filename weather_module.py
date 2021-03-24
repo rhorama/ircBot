@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 from utils import convert_date
 
 
-def main(switch_input, f):
+def main(switch_input):
     load_dotenv()
     apikey = os.getenv('APIKEY_OPENWEATHERMAP')
-    current_weather_url = f"http://api.openweathermap.org/data/2.5/weather?q={switch_input.strip(' ')}&units=imperial&appid={apikey}"
+    current_weather_url = f"http://api.openweathermap.org/data/2.5/weather?q={switch_input[0].strip(' ')}&units=imperial&appid={apikey}"
     response = requests.get(current_weather_url)
     weather_table = {}
 
@@ -38,21 +38,19 @@ def main(switch_input, f):
     for item in weather_table:
         out.append(f"{item}: {weather_table[item]}")
 
-    one_call_weather_url = f"https://api.openweathermap.org/data/2.5/onecall?lat={weather_table['lat']}&lon={weather_table['lon']}&exclude=minutely,hourly&units=imperial&appid={apikey}"
-    one_call_response = requests.get(one_call_weather_url)
-    one_call_json = one_call_response.json()
-
-    daily_weather_string = "forecast: "
-
-    try:
-        daily = one_call_json["daily"]
-        for json_day in daily:
-            unix_date = json_day["dt"]
-            readable_date = convert_date(unix_date)
-            daily_weather_string = f"{daily_weather_string}|{readable_date}"
-    except KeyError:
-        return "Key Exception: Can't find key Daily"
-    if f == True:
+    if switch_input[1].lower() == "forecast":
+        try:
+            one_call_weather_url = f"https://api.openweathermap.org/data/2.5/onecall?lat={weather_table['lat']}&lon={weather_table['lon']}&exclude=minutely,hourly&units=imperial&appid={apikey}"
+            one_call_response = requests.get(one_call_weather_url)
+            one_call_json = one_call_response.json()
+            daily_weather_string = "forecast: "
+            daily = one_call_json["daily"]
+            for json_day in daily:
+                unix_date = json_day["dt"]
+                readable_date = convert_date(unix_date)
+                daily_weather_string = f"{daily_weather_string}|{readable_date}"
+        except KeyError:
+            return "Key Exception: Can't find key Daily"
         print(daily_weather_string)
         return daily_weather_string
     else:

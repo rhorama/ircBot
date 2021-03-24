@@ -7,12 +7,10 @@ def main(input):
         return "error"
     input_items = input.split(" ")
     input_command = input_items[0]
-    current_weather = weather_module.main(input.split(" ")[1], False)
-    weather_forecast = weather_module.main(input.split(" ")[1], True)
-    coin_flip = utils.flip()
+    input_args = input_items[1:]
     try:
-        command_data = {'!w': current_weather, '!wf': weather_forecast, '!cf': coin_flip}
+        command_data = {'!w': weather_module.main, '!cf': utils.flip}
         out = command_data[input_command]
-        return out
+        return out(input_args)
     except IndexError:
         return "not a valid command"

@@ -32,7 +32,8 @@ class Bot:
             ircmsg = ircmsg.strip('\n\r')
             print(ircmsg)
 
-    def ping(self, ircsock):  # respond to server Pings.
+    # respond to server Pings
+    def ping(self, ircsock):
         pong = "PONG"
         ircsock.send("PONG :pingis\n".encode())
         print(pong)

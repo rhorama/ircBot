@@ -11,6 +11,14 @@ def main(input):
     try:
         command_data = {'!w': weather_module.main, '!cf': flip}
         out = command_data[input_command]
-        return out(input_args)
-    except IndexError:
-        return "not a valid command"
+        if len(input_args) == 0:
+            try:
+                return out()
+            except TypeError as te:
+                return f"TypeError: {te}"
+        try:
+            return out(input_args)
+        except TypeError as te:
+            return f"TypeError: {te}"
+    except IndexError as ie:
+        return f"IndexError: Not a valid command. Exception info: {ie}"

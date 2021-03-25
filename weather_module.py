@@ -33,14 +33,14 @@ def main(switch_input):
     weather_table['wind'] = json_data["wind"]["speed"]
     weather_table['latitude'] = json_data["coord"]["lat"]
     weather_table['longitude'] = json_data["coord"]["lon"]
-    weather_table['coord'] = f"{weather_table['lat']}|{weather_table['lon']}"
+    weather_table['coord'] = f"{weather_table['latitude']}|{weather_table['longitude']}"
     out = []
     for item in weather_table:
         out.append(f"{item}: {weather_table[item]}")
 
-    if switch_input[1].lower() == "forecast":
+    if 'forecast' in switch_input:
         try:
-            one_call_weather_url = f"https://api.openweathermap.org/data/2.5/onecall?lat={weather_table['lat']}&lon={weather_table['lon']}&exclude=minutely,hourly&units=imperial&appid={apikey}"
+            one_call_weather_url = f"https://api.openweathermap.org/data/2.5/onecall?lat={weather_table['latitude']}&lon={weather_table['longitude']}&exclude=minutely,hourly&units=imperial&appid={apikey}"
             one_call_response = requests.get(one_call_weather_url)
             one_call_json = one_call_response.json()
             daily_weather_string = "forecast: "

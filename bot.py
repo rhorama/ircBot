@@ -3,6 +3,7 @@ import time
 import switchboard
 import utils
 import logger
+from dotenv import load_dotenv
 
 # these vars will live in a config file eventually
 server = "irc.irchighway.net"
@@ -58,6 +59,7 @@ class Bot:
     def listener(self):
         while 1:
             exitcode = f"bye  + {botnick}"
+            reload_command = "reload environment"
             ircmsg = self.ircsock.recv(2048).decode("UTF-8")
             ircmsg = ircmsg.strip('\n\r')
             if ircmsg.find("PING :") != -1:
@@ -66,6 +68,15 @@ class Bot:
                 name = ircmsg.split('!', 1)[0][1:]
                 message = ircmsg.split('PRIVMSG', 1)[1].split(':', 1)[1]
                 if len(name) < 17:
+                    if name.lower() == adminname.lower():
+                        if exitcode in message.rstrip():
+                            print("exit code received")
+                            self.ircsock.send("QUIT \n".encode())
+                            return
+                        if reload_command in message.rstrip():
+                            print("reloading dotenv")
+                            self.sendmsg("ok")
+                            load_dotenv()
                     if message.startswith("!"):
                         mes = str(switchboard.main(
                             message.rstrip()))
@@ -80,11 +91,7 @@ class Bot:
                             target = name
                             message = "Could not parse. The message should be in the format of ‘.tell [target] [message]’ to work properly."
                             self.sendmsg(message, target)
-                if name.lower() == adminname.lower():
-                    if message.rstrip() == exitcode:
-                        print("exit code received")
-                        self.ircsock.send("QUIT \n".encode())
-                        return
+                
 
 #eventually need to move startup to own files
 bot1 = Bot(server, port, channel, botnick, adminname, logfile)

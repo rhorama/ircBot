@@ -29,8 +29,7 @@ class Bot:
         self.ircsock.send(f"JOIN {chan}\n".encode())
         ircmsg = ""
         while ircmsg.find("End of /NAMES list.") == -1:
-            ircmsg = self.ircsock.recv(2048).decode("UTF-8")
-            ircmsg = ircmsg.strip('\n\r')
+            ircmsg = self.ircsock.recv(2048).decode("UTF-8").strip('\n\r')
             print(ircmsg)
 
     # respond to server Pings
@@ -40,7 +39,9 @@ class Bot:
         print(pong)
 
     # sends messages to the target.
-    def sendmsg(self, msg, target=channel):
+    def sendmsg(self, msg, target=None):
+        if target is None: 
+            target = self.channel
         self.ircsock.send(f"PRIVMSG {target} :{msg}\n".encode())
 
     def create_socket(self):
@@ -58,7 +59,7 @@ class Bot:
 
     def listener(self):
         while 1:
-            exitcode = f"bye  + {botnick}"
+            exitcode = f"bye {botnick}"
             reload_command = "reload environment"
             ircmsg = self.ircsock.recv(2048).decode("UTF-8")
             ircmsg = ircmsg.strip('\n\r')

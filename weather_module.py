@@ -32,9 +32,8 @@ def main(switch_input):
     weather_table['latitude'] = json_data["coord"]["lat"]
     weather_table['longitude'] = json_data["coord"]["lon"]
     weather_table['coord'] = f"{weather_table['latitude']}|{weather_table['longitude']}"
-    out = []
-    for item in weather_table:
-        out.append(f"{item}: {weather_table[item]}")
+
+    out = [f"{item}: {weather_table[item]}" for item in weather_table]
 
     if 'forecast' in switch_input:
         try:

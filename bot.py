@@ -24,23 +24,23 @@ class Bot:
         self.logger = utils.get_logger()
         self.ircsock = self.create_socket()
 
-    def joinchan(self, chan, ircsock):
-        ircsock.send(f"JOIN {chan}\n".encode())
+    def joinchan(self, chan):
+        self.ircsock.send(f"JOIN {chan}\n".encode())
         ircmsg = ""
         while ircmsg.find("End of /NAMES list.") == -1:
-            ircmsg = ircsock.recv(2048).decode("UTF-8")
+            ircmsg = self.ircsock.recv(2048).decode("UTF-8")
             ircmsg = ircmsg.strip('\n\r')
             print(ircmsg)
 
     # respond to server Pings
-    def ping(self, ircsock):
+    def ping(self):
         pong = "PONG"
-        ircsock.send("PONG :pingis\n".encode())
+        self.ircsock.send("PONG :pingis\n".encode())
         print(pong)
 
     # sends messages to the target.
-    def sendmsg(self, ircsock, msg, target=channel):
-        ircsock.send(f"PRIVMSG {target} :{msg}\n".encode())
+    def sendmsg(self, msg, target=channel):
+        self.ircsock.send(f"PRIVMSG {target} :{msg}\n".encode())
 
     def create_socket(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -48,21 +48,20 @@ class Bot:
         return sock
 
     def run(self):
-        ircsock = self.create_socket()
-        ircsock.send(
+        self.ircsock.send(
             f"USER {botnick} {botnick} {botnick} {botnick}\n".encode())
-        ircsock.send(f"NICK {botnick}\n".encode())
+        self.ircsock.send(f"NICK {botnick}\n".encode())
         time.sleep(2)
-        self.joinchan(channel, ircsock)
-        self.listener(ircsock)
+        self.joinchan(channel)
+        self.listener()
 
-    def listener(self, ircsock):
+    def listener(self):
         while 1:
             exitcode = f"bye  + {botnick}"
-            ircmsg = ircsock.recv(2048).decode("UTF-8")
+            ircmsg = self.ircsock.recv(2048).decode("UTF-8")
             ircmsg = ircmsg.strip('\n\r')
             if ircmsg.find("PING :") != -1:
-                self.ping(ircsock)
+                self.ping()
             if ircmsg.find("PRIVMSG") != -1:
                 name = ircmsg.split('!', 1)[0][1:]
                 message = ircmsg.split('PRIVMSG', 1)[1].split(':', 1)[1]
@@ -71,7 +70,7 @@ class Bot:
                         mes = str(switchboard.main(
                             message.rstrip()))
                         if mes != "error" and mes != -1:
-                            self.sendmsg(ircsock, mes)
+                            self.sendmsg(mes)
                     if message[:5].find('.tell') != -1:
                         target = message.split(' ', 1)[1]
                         if target.find(' ') != -1:
@@ -80,11 +79,11 @@ class Bot:
                         else:
                             target = name
                             message = "Could not parse. The message should be in the format of ‘.tell [target] [message]’ to work properly."
-                            self.sendmsg(ircsock, message, target)
+                            self.sendmsg(message, target)
                 if name.lower() == adminname.lower():
                     if message.rstrip() == exitcode:
                         print("exit code received")
-                        ircsock.send("QUIT \n".encode())
+                        self.ircsock.send("QUIT \n".encode())
                         return
 
 #eventually need to move startup to own files
